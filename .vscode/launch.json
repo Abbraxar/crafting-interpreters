@@ -1,0 +1,44 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch GenerateAst",
+      "request": "launch",
+      "mainClass": "jlox.tool.GenerateAst",
+      "projectName": "crafting-interpreters_692d0de2",
+      "args": "/home/amauro/Documents/dev/crafting-interpreters/jlox/interpreter"
+    },
+    {
+      "type": "java",
+      "name": "Launch Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Launch HelloWorld",
+      "request": "launch",
+      "mainClass": "Java.HelloWorld",
+      "projectName": "crafting-interpreters_692d0de2"
+    },
+    {
+      "type": "java",
+      "name": "Interpet lox file",
+      "request": "launch",
+      "mainClass": "jlox.interpreter.Lox",
+      "projectName": "crafting-interpreters_692d0de2",
+      "args": "/home/amauro/Documents/dev/crafting-interpreters/jlox/test.lox"
+    },
+    {
+      "type": "java",
+      "name": "Launch lox REPL",
+      "request": "launch",
+      "mainClass": "jlox.interpreter.Lox",
+      "projectName": "crafting-interpreters_692d0de2"
+    }
+  ]
+}
