@@ -9,8 +9,8 @@
       "name": "Launch GenerateAst",
       "request": "launch",
       "mainClass": "jlox.tool.GenerateAst",
-      "projectName": "crafting-interpreters_692d0de2",
-      "args": "/home/amauro/Documents/dev/crafting-interpreters/jlox/interpreter"
+      "projectName": "crafting-interpreters_8d836559",
+      "args": "/home/amauro/dev/crafting-interpreters/jlox/interpreter"
     },
     {
       "type": "java",
@@ -23,22 +23,22 @@
       "name": "Launch HelloWorld",
       "request": "launch",
       "mainClass": "Java.HelloWorld",
-      "projectName": "crafting-interpreters_692d0de2"
+      "projectName": "crafting-interpreters_8d836559"
     },
     {
       "type": "java",
-      "name": "Interpet lox file",
+      "name": "Interpret lox file",
       "request": "launch",
       "mainClass": "jlox.interpreter.Lox",
-      "projectName": "crafting-interpreters_692d0de2",
-      "args": "/home/amauro/Documents/dev/crafting-interpreters/jlox/test.lox"
+      "projectName": "crafting-interpreters_8d836559",
+      "args": "/home/amauro/dev/crafting-interpreters/jlox/test.lox"
     },
     {
       "type": "java",
       "name": "Launch lox REPL",
       "request": "launch",
       "mainClass": "jlox.interpreter.Lox",
-      "projectName": "crafting-interpreters_692d0de2"
+      "projectName": "crafting-interpreters_8d836559"
     }
   ]
 }
