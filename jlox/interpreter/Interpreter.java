@@ -122,7 +122,11 @@ class Interpreter implements Expr.Visitor<Object>,
 
   @Override
   public Object visitVariableExpr(Variable expr) {
-    return environment.get(expr.name);
+    Object var = environment.get(expr.name);
+    if (var == null) {
+      throw new RuntimeError(expr.name, "Accessing variable '" + expr.name.lexeme + "' before initialization.");
+    }
+    return var;
   }
 
   private void checkNumberOperand(Token operator, Object operand) {
