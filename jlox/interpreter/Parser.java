@@ -10,9 +10,15 @@ class Parser {
 
   private final List<Token> tokens;
   private int current = 0;
+  private boolean isRepl = false;
 
   Parser(List<Token> tokens) {
     this.tokens = tokens;
+  }
+
+  Parser(List<Token> tokens, boolean isRepl) {
+    this.tokens = tokens;
+    this.isRepl = isRepl;
   }
 
   List<Stmt> parse() {
@@ -62,6 +68,9 @@ class Parser {
 
   private Stmt expressionStatement() {
     Expr expr = expression();
+    if (this.isRepl) {
+      return new Stmt.Print(expr);
+    }
     consume(SEMICOLON, "Expect ';' after expression.");
     return new Stmt.Expression(expr);
   }
