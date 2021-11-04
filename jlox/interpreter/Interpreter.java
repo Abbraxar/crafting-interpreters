@@ -3,12 +3,6 @@ package jlox.interpreter;
 import java.util.ArrayList;
 import java.util.List;
 
-import jlox.interpreter.Expr.Variable;
-import jlox.interpreter.Stmt.Break;
-import jlox.interpreter.Stmt.Expression;
-import jlox.interpreter.Stmt.Print;
-import jlox.interpreter.Stmt.Var;
-
 class Interpreter implements Expr.Visitor<Object>,
                              Stmt.Visitor<Void> {
   final Environment globals = new Environment();
@@ -136,6 +130,12 @@ class Interpreter implements Expr.Visitor<Object>,
   }
 
   @Override
+  public Object visitLambdaExpr(Expr.Lambda expr) {
+    LoxLambda function = new LoxLambda(expr, environment);
+    return function;
+  }
+
+  @Override
   public Object visitGroupingExpr(Expr.Grouping expr) {
     return evaluate(expr.expression);
   }
@@ -177,7 +177,7 @@ class Interpreter implements Expr.Visitor<Object>,
   }
 
   @Override
-  public Object visitVariableExpr(Variable expr) {
+  public Object visitVariableExpr(Expr.Variable expr) {
     Object var = environment.get(expr.name);
     if (var == null) {
       throw new RuntimeError(expr.name, "Accessing variable '" + expr.name.lexeme + "' before initialization.");
@@ -253,7 +253,7 @@ class Interpreter implements Expr.Visitor<Object>,
   }
 
   @Override
-  public Void visitExpressionStmt(Expression stmt) {
+  public Void visitExpressionStmt(Stmt.Expression stmt) {
     evaluate(stmt.expression);
     return null;
   }
@@ -276,7 +276,7 @@ class Interpreter implements Expr.Visitor<Object>,
   }
 
   @Override
-  public Void visitPrintStmt(Print stmt) {
+  public Void visitPrintStmt(Stmt.Print stmt) {
     Object value = evaluate(stmt.expression);
     System.out.println(stringify(value));
     return null;
@@ -291,13 +291,13 @@ class Interpreter implements Expr.Visitor<Object>,
   }
 
   @Override
-  public Void visitBreakStmt(Break stmt) {
+  public Void visitBreakStmt(Stmt.Break stmt) {
     isBreak = true;
     return null;
   }
 
   @Override
-  public Void visitVarStmt(Var stmt) {
+  public Void visitVarStmt(Stmt.Var stmt) {
     Object value = null;
     if (stmt.initializer != null) {
       value = evaluate(stmt.initializer);

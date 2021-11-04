@@ -5,12 +5,13 @@ import java.util.List;
 abstract class Expr {
   interface Visitor<R> {
     R visitAssignExpr(Assign expr);
-    R visitTernaryExpr(Ternary expr);
     R visitBinaryExpr(Binary expr);
     R visitCallExpr(Call expr);
     R visitGroupingExpr(Grouping expr);
+    R visitLambdaExpr(Lambda expr);
     R visitLiteralExpr(Literal expr);
     R visitLogicalExpr(Logical expr);
+    R visitTernaryExpr(Ternary expr);
     R visitUnaryExpr(Unary expr);
     R visitVariableExpr(Variable expr);
   }
@@ -27,24 +28,6 @@ abstract class Expr {
 
     final Token name;
     final Expr value;
-  }
-  static class Ternary extends Expr {
-    Ternary(Token operator, Expr left, Expr center, Expr right) {
-      this.operator = operator;
-      this.left = left;
-      this.center = center;
-      this.right = right;
-    }
-
-    @Override
-    <R> R accept(Visitor<R> visitor) {
-      return visitor.visitTernaryExpr(this);
-    }
-
-    final Token operator;
-    final Expr left;
-    final Expr center;
-    final Expr right;
   }
   static class Binary extends Expr {
     Binary(Expr left, Token operator, Expr right) {
@@ -90,6 +73,22 @@ abstract class Expr {
 
     final Expr expression;
   }
+  static class Lambda extends Expr {
+    Lambda(Token paren, List<Token> params, List<Stmt> body) {
+      this.paren = paren;
+      this.params = params;
+      this.body = body;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitLambdaExpr(this);
+    }
+
+    final Token paren;
+    final List<Token> params;
+    final List<Stmt> body;
+  }
   static class Literal extends Expr {
     Literal(Object value) {
       this.value = value;
@@ -116,6 +115,24 @@ abstract class Expr {
 
     final Expr left;
     final Token operator;
+    final Expr right;
+  }
+  static class Ternary extends Expr {
+    Ternary(Token operator, Expr left, Expr center, Expr right) {
+      this.operator = operator;
+      this.left = left;
+      this.center = center;
+      this.right = right;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitTernaryExpr(this);
+    }
+
+    final Token operator;
+    final Expr left;
+    final Expr center;
     final Expr right;
   }
   static class Unary extends Expr {

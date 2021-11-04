@@ -2,11 +2,6 @@ package jlox.interpreter;
 
 import java.util.Arrays;
 
-import jlox.interpreter.Expr.Assign;
-import jlox.interpreter.Expr.Call;
-import jlox.interpreter.Expr.Logical;
-import jlox.interpreter.Expr.Variable;
-
 class AstPrinter implements Expr.Visitor<String> {
   String print(Expr expr) {
     return expr.accept(this);
@@ -25,8 +20,13 @@ class AstPrinter implements Expr.Visitor<String> {
   }
   
   @Override
-  public String visitCallExpr(Call expr) {
+  public String visitCallExpr(Expr.Call expr) {
     return parenthesize("call", (Expr[])Arrays.asList(expr.callee, expr.arguments).toArray());
+  }
+
+  @Override
+  public String visitLambdaExpr(Expr.Lambda expr) {
+    return parenthesize("lambda", (Expr[])expr.params.toArray());
   }
 
   @Override
@@ -41,7 +41,7 @@ class AstPrinter implements Expr.Visitor<String> {
   }
 
   @Override
-  public String visitLogicalExpr(Logical expr) {
+  public String visitLogicalExpr(Expr.Logical expr) {
     return parenthesize(expr.operator.lexeme,
                         expr.left, expr.right);
   }
@@ -52,12 +52,12 @@ class AstPrinter implements Expr.Visitor<String> {
   }
 
   @Override
-  public String visitVariableExpr(Variable expr) {
+  public String visitVariableExpr(Expr.Variable expr) {
     return parenthesize(expr.name.lexeme, expr);
   }
 
   @Override
-  public String visitAssignExpr(Assign expr) {
+  public String visitAssignExpr(Expr.Assign expr) {
     return parenthesize(expr.name.lexeme, expr);
   }
 
