@@ -3,6 +3,7 @@ package jlox.interpreter;
 import java.util.List;
 
 import jlox.interpreter.Expr.Variable;
+import jlox.interpreter.Stmt.Break;
 import jlox.interpreter.Stmt.Expression;
 import jlox.interpreter.Stmt.Print;
 import jlox.interpreter.Stmt.Var;
@@ -10,6 +11,7 @@ import jlox.interpreter.Stmt.Var;
 class Interpreter implements Expr.Visitor<Object>,
                              Stmt.Visitor<Void> {
   private Environment environment = new Environment();
+  private boolean isBreak = false;
 
   void interpret(List<Stmt> statements) {
     try {
@@ -233,6 +235,12 @@ class Interpreter implements Expr.Visitor<Object>,
   }
 
   @Override
+  public Void visitBreakStmt(Break stmt) {
+    isBreak = true;
+    return null;
+  }
+
+  @Override
   public Void visitVarStmt(Var stmt) {
     Object value = null;
     if (stmt.initializer != null) {
@@ -245,9 +253,10 @@ class Interpreter implements Expr.Visitor<Object>,
 
   @Override
   public Void visitWhileStmt(Stmt.While stmt) {
-    while (isTruthy(evaluate(stmt.condition))) {
+    while (!isBreak && isTruthy(evaluate(stmt.condition))) {
       execute(stmt.body);
     }
+    isBreak = false;
     return null;
   }
 
