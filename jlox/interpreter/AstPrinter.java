@@ -1,6 +1,7 @@
 package jlox.interpreter;
 
 import jlox.interpreter.Expr.Assign;
+import jlox.interpreter.Expr.Logical;
 import jlox.interpreter.Expr.Variable;
 
 class AstPrinter implements Expr.Visitor<String> {
@@ -29,6 +30,12 @@ class AstPrinter implements Expr.Visitor<String> {
   public String visitLiteralExpr(Expr.Literal expr) {
     if (expr.value == null) return "nil";
     return expr.value.toString();
+  }
+
+  @Override
+  public String visitLogicalExpr(Logical expr) {
+    return parenthesize(expr.operator.lexeme,
+                        expr.left, expr.right);
   }
 
   @Override
