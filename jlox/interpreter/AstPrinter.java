@@ -1,6 +1,9 @@
 package jlox.interpreter;
 
+import java.util.Arrays;
+
 import jlox.interpreter.Expr.Assign;
+import jlox.interpreter.Expr.Call;
 import jlox.interpreter.Expr.Logical;
 import jlox.interpreter.Expr.Variable;
 
@@ -14,11 +17,16 @@ class AstPrinter implements Expr.Visitor<String> {
     return parenthesize(expr.operator.lexeme,
                         expr.left, expr.center, expr.right);
   }
-
+  
   @Override
   public String visitBinaryExpr(Expr.Binary expr) {
     return parenthesize(expr.operator.lexeme,
                         expr.left, expr.right);
+  }
+  
+  @Override
+  public String visitCallExpr(Call expr) {
+    return parenthesize("call", (Expr[])Arrays.asList(expr.callee, expr.arguments).toArray());
   }
 
   @Override
