@@ -1,7 +1,8 @@
-class Bacon {
-  eat() {
-    print "Crunch crunch crunch!";
+class Eclair {
+  cook() {
+    super.cook();
+    print "Pipe full of crème pâtissière.";
   }
 }
 
-Bacon().eat(); // Prints "Crunch crunch crunch!".
+Eclair().cook();
