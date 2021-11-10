@@ -1,14 +1,7 @@
-var a = 3;
-var c = 4;
-
-fun test(fn) {
-  fn(a);
+class Bacon {
+  eat() {
+    print "Crunch crunch crunch!";
+  }
 }
 
-test(fun(n) {
-  var b = 5;
-  var x = 7;
-  print n + b;
-
-  return "blablabla";
-});
+Bacon().eat(); // Prints "Crunch crunch crunch!".
