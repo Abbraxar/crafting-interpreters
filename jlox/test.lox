@@ -8,8 +8,7 @@ fun test(fn) {
 test(fun(n) {
   var b = 5;
   var x = 7;
-  var y;
-  print y + n + b;
+  print n + b;
 
   return "blablabla";
 });

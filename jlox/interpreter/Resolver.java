@@ -8,6 +8,8 @@ import java.util.Stack;
 class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
   private final Interpreter interpreter;
   private final Stack<Map<String, Boolean>> scopes = new Stack<>();
+  private Map<String, Boolean> resolvedLocals = new HashMap<>();
+  private Map<String, Token> localTokens = new HashMap<>();
   private FunctionType currentFunction = FunctionType.NONE;
 
   Resolver(Interpreter interpreter) {
@@ -55,7 +57,15 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
   }
 
   private void endScope() {
-    scopes.pop();
+    Map<String, Boolean> scope = scopes.pop();
+    for (var entry : scope.entrySet()) {
+      if (!resolvedLocals.containsKey(entry.getKey())) {
+        Lox.error(localTokens.get(entry.getKey()),
+          "This local variable is never used.");
+      }
+    }
+    resolvedLocals = new HashMap<>();
+    localTokens = new HashMap<>();
   }
 
   private void declare(Token name) {
@@ -68,6 +78,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     }
 
     scope.put(name.lexeme, false);
+    localTokens.put(name.lexeme, name);
   }
 
   private void define(Token name) {
@@ -79,6 +90,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     for (int i = scopes.size() - 1; i >= 0; i--) {
       if (scopes.get(i).containsKey(name.lexeme)) {
         interpreter.resolve(expr, scopes.size() - 1 - i);
+        resolvedLocals.put(name.lexeme, true);
         return;
       }
     }
