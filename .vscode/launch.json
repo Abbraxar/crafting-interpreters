@@ -5,6 +5,25 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "clox file",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/clox/clox",
+      "args": ["/home/amauro/dev/crafting-interpreters/clox/test.lox"],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+          {
+              "description": "Enable pretty-printing for gdb",
+              "text": "-enable-pretty-printing",
+              "ignoreFailures": true
+          }
+      ]
+    },
+    {
       "type": "java",
       "name": "Launch GenerateAst",
       "request": "launch",

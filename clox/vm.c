@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "common.h"
+#include "compiler.h"
 #include "debug.h"
 #include "vm.h"
 
@@ -52,6 +53,16 @@ static InterpretResult run() {
       case OP_MULTIPLY: BINARY_OP(*); break;
       case OP_DIVIDE:   BINARY_OP(/); break;
       case OP_NEGATE: push(&vm.stack, -pop(&vm.stack)); break;
+      case OP_TERNARY: {
+        Value right = pop(&vm.stack);
+        Value middle = pop(&vm.stack);
+        if (pop(&vm.stack)) {
+          push(&vm.stack, middle);
+        } else {
+          push(&vm.stack, right);
+        }
+        break;
+      }
       case OP_RETURN: {
         printValue(pop(&vm.stack));
         printf("\n");
@@ -65,8 +76,20 @@ static InterpretResult run() {
 #undef BINARY_OP
 }
 
-InterpretResult interpret(Chunk* chunk) {
-  vm.chunk = chunk;
+InterpretResult interpret(const char* source) {
+  Chunk chunk;
+  initChunk(&chunk);
+
+  if (!compile(source, &chunk)) {
+    freeChunk(&chunk);
+    return INTERPRET_COMPILE_ERROR;
+  }
+
+  vm.chunk = &chunk;
   vm.ip = vm.chunk->code;
-  return run();
+
+  InterpretResult result = run();
+
+  freeChunk(&chunk);
+  return result;
 }
