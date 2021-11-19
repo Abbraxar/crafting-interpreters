@@ -10,7 +10,8 @@
 			"stdio.h": "c",
 			"linkedlist.h": "c",
 			"debug.h": "c",
-			"stdlib.h": "c"
+			"stdlib.h": "c",
+			"type_traits": "c"
 		},
 		"editor.tabSize": 2
 	}
